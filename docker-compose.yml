@@ -1,0 +1,11 @@
+services:
+  app:
+    build: .
+    container_name: threatscope-app
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
