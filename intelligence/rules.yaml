@@ -1,0 +1,64 @@
+detectors:
+  brute_force:
+    window_seconds: 60
+    threshold: 10
+    target_request_types: ["POST"]
+
+  port_scanner:
+    window_seconds: 30
+    threshold: 5
+
+  credential_stuffing:
+    min_ips_for_reuse: 3
+    unique_creds_threshold: 5
+    window_seconds: 300
+
+  injection:
+    patterns:
+      sql:
+        - "(?i)('\\s*(OR|AND)\\s+(1|'[^']*')\\s*=\\s*(1|'[^']*'))"
+        - "(?i)(UNION\\s+(ALL\\s+)?SELECT)"
+        - "(?i)(SELECT\\s+.*\\s+FROM\\s+)"
+        - "(?i)(INSERT\\s+INTO\\s+)"
+        - "(?i)(DROP\\s+(TABLE|DATABASE))"
+        - "(?i)(--\\s*$|;\\s*--)"
+        - "(?i)(SLEEP\\s*\\(|BENCHMARK\\s*\\()"
+        - "(?i)('\\s*;\\s*(DROP|DELETE|UPDATE|INSERT))"
+      nosql:
+        - "(\\$gt|\\$lt|\\$ne|\\$eq|\\$regex|\\$where|\\$exists)"
+        - "(\\{\\s*\\$[a-z]+\\s*:)"
+        - "(?i)(db\\.[a-zA-Z]+\\.find\\()"
+      command:
+        - "(;\\s*(ls|cat|whoami|id|uname|pwd|wget|curl|nc|bash|sh)\\b)"
+        - "(\\|\\s*(ls|cat|whoami|id|uname)\\b)"
+        - "(`[^`]*`)"
+        - "(\\$\\([^)]+\\))"
+        - "(?i)(\\.\\./\\.\\./)"
+        - "(?i)(/etc/passwd|/etc/shadow)"
+        - "(?i)(cmd\\.exe|powershell|cmd\\s*/c)"
+      ssti:
+        - "(\\{\\{.*\\}\\})"
+        - "(\\$\\{.*\\})"
+        - "(?i)(\\{%.*%\\})"
+        - "(?i)(__class__|__mro__|__subclasses__|__builtins__)"
+
+# ─── Scoring Configuration ────────────────────────────
+scoring:
+  weights:
+    brute_force: 0.35
+    port_scanner: 0.25
+    credential_stuffing: 0.20
+    injection: 0.20
+  thresholds:
+    normal: [0, 30]
+    suspicious: [30, 70]
+    attacker: [70, 100]
+
+# ─── Alert Configuration ──────────────────────────────
+alerts:
+  min_score_for_alert: 50
+  alert_cooldown_seconds: 300  # Don't re-alert same IP within 5 min
+
+# ─── History Configuration ────────────────────────────
+history_ttl_seconds: 600
+max_history_per_ip: 200
