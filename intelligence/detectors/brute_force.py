@@ -1,6 +1,6 @@
 import time
 from collections import defaultdict, deque
-from intelligence.detector.base import BaseDetector,DetectorResult
+from intelligence.detectors.base import BaseDetector, DetectorResult
 
 #class to detect number of attempts by changing user credentials per each try
 #store IPs + count of attempts + timestamps of each login

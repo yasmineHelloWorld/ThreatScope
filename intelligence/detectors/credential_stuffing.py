@@ -1,6 +1,6 @@
 import time 
 from collections import defaultdict
-from intelligence.detector.base import BaseDetector, DetectorResult
+from intelligence.detectors.base import BaseDetector, DetectorResult
 #case law attacker m3ah list kbeera men el usernames we passwords we beyhawel yegarab yedakhlhom gowa el website dahfe moda olayela gedan 
 #fekreto eno yet2ad en law nafs ip beykhosh be credentials kteer aw naf el credentails bas men kaza ip
  

@@ -1,6 +1,6 @@
 import time
 from collections import defaultdict
-from intelligence.detector.base import BaseDetector, DetectorResult
+from intelligence.detectors.base import BaseDetector, DetectorResult
 
 #main goal for class if ip try to scan many ports in short time 
 #port scanning: attacker send requests to ports or services to check avaliable services (kam haga mokhtalefa fe wa2t mokhtalef)

@@ -1,5 +1,5 @@
 import re
-from intelligence.detector.base import BaseDetector, DetectorResult
+from intelligence.detectors.base import BaseDetector, DetectorResult
 
 # el fekra badal ma tedakhal user input tabi3y ana momken  adakhal inject khabith yegbly sensitive data
 # beyshtaghal in user beydakhal data fe regex pattern mawgoda gowa el detector y-check in requested data di mesh men el injections 
