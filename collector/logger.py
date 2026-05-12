@@ -27,7 +27,7 @@ async def log_event(
     is_attack: bool = False,
     session_id: Optional[UUID] = None,
     response_sent: Optional[str] = None,
-    metadata: Optional[dict] = None,
+    extra_data: Optional[dict] = None,
 ) -> UUID:
     async with AsyncSessionLocal() as session:
         event = Event(
@@ -46,7 +46,7 @@ async def log_event(
             is_attack=is_attack,
             session_id=session_id,
             response_sent=response_sent,
-            metadata=metadata,
+            extra_data=extra_data,
         )
         session.add(event)
         await session.commit()

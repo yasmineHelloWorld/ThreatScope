@@ -1,7 +1,6 @@
 import logging
 import json
 from typing import Optional
-from groq import Groq
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +21,7 @@ class GroqClient:
             self.client = None
         else:
             try:
+                from groq import Groq
                 self.client = Groq(api_key=self.api_key)
                 logger.info("GroqClient initialized with model=%s", self.model)
             except Exception as e:

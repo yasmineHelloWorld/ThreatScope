@@ -69,7 +69,8 @@ class StatsService:
         start_time: datetime | None = None,
         end_time: datetime | None = None,
     ) -> list[dict]:
-        bucket = func.date_trunc(interval, Event.timestamp).label("bucket")
+        fmt = {"minute": "%Y-%m-%d %H:%M:00", "hour": "%Y-%m-%d %H:00:00", "day": "%Y-%m-%d"}.get(interval, "%Y-%m-%d %H:00:00")
+        bucket = func.strftime(fmt, Event.timestamp).label("bucket")
         query = select(
             bucket,
             func.count(Event.id).label("event_count"),
@@ -84,7 +85,7 @@ class StatsService:
         rows = await self.session.execute(query.group_by(bucket).order_by(bucket))
         return [
             {
-                "bucket": row.bucket.isoformat() if row.bucket else None,
+                "bucket": row.bucket,
                 "event_count": row.event_count,
                 "attack_count": row.attack_count,
                 "average_risk": round(float(row.average_risk), 2),

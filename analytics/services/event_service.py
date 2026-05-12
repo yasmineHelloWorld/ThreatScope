@@ -37,7 +37,7 @@ def serialize_event(event: Event) -> dict[str, Any]:
         "is_attack": bool(event.is_attack),
         "session_id": str(event.session_id) if event.session_id else None,
         "response_sent": event.response_sent,
-        "metadata": event.metadata or {},
+        "metadata": event.extra_data or {},
     }
 
 

@@ -1,3 +1,4 @@
+import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
@@ -6,11 +7,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from analytics.routers import analytics, events, stats
 from analytics.websocket_manager import websocket_manager
 from collector.db import close_db, init_db
+from intelligence.analyzer import IntelligenceAnalyzer
+
+logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await init_db()
+    logger.info("Initializing IntelligenceAnalyzer...")
+    app.state.analyzer = IntelligenceAnalyzer()
     yield
     await close_db()
 
@@ -27,9 +33,12 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:5173",
         "http://127.0.0.1:5173",
+        "http://localhost:5174",
+        "http://127.0.0.1:5174",
         "http://localhost:3000",
         "http://127.0.0.1:3000",
     ],
+    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
